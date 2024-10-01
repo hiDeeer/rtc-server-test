@@ -11,20 +11,15 @@ async function bootstrap() {
   app.enableCors();
 
   const httpsOptions = {
-    key: readFileSync('./server.key'), // 개인 키 파일 경로
-    cert: readFileSync('./server.cert'), // 인증서 파일 경로
+    key: readFileSync('/etc/letsencrypt/live/hideeer.p-e.kr/privkey.pem'),
+    cert: readFileSync('/etc/letsencrypt/live/hideeer.p-e.kr/fullchain.pem'),
   };
 
   const server = https.createServer(httpsOptions, app.getHttpAdapter().getInstance());
 
-  // WebSocket Gateway와 연결된 Socket.IO 인스턴스 생성
   const io = new Server(server, {
     cors: {
-      origin: [
-        'https://225c-221-168-22-204.ngrok-free.app',
-        'https://localhost:3001',
-        'https://10.80.163.177:3001',
-      ],
+      origin: '*',
       methods: ['GET', 'POST'],
       credentials: true,
     },
@@ -37,10 +32,9 @@ async function bootstrap() {
     });
   });
 
-  // WebSocketGateway에 Socket.IO 인스턴스 주입
   app.get(WebrtcGateway).server = io;
 
-  await server.listen(30400);
-  console.log('HTTPS server running on port 30400');
+  await server.listen(3001);
+  console.log('HTTPS server running on port 3001');
 }
 bootstrap();
