@@ -8,7 +8,13 @@ import {
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
 
-@WebSocketGateway(3000, { cors: true }) // 포트 3000에서 WebSocket 서버를 생성
+@WebSocketGateway(3000, {
+  cors: {
+    origin: 'https://225c-221-168-22-204.ngrok-free.app', // 허용할 출처
+    methods: ['GET', 'POST'], // 허용할 메소드
+    credentials: true, // 인증 정보 포함 여부
+  },
+})
 export class WebrtcGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
