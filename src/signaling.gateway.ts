@@ -10,7 +10,11 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway(3000, {
   cors: {
-    origin: 'https://225c-221-168-22-204.ngrok-free.app', // 허용할 출처
+    origin: [
+      'https://225c-221-168-22-204.ngrok-free.app',
+      'http://localhost:3001',
+      'http://10.80.163.177:3001',
+    ], // 허용할 출처
     methods: ['GET', 'POST'], // 허용할 메소드
     credentials: true, // 인증 정보 포함 여부
   },
