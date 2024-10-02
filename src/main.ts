@@ -25,6 +25,11 @@ async function bootstrap() {
     },
   });
 
+  // WebRTC Gateway와 Socket.io 서버 연결
+  const webrtcGateway = app.get(WebrtcGateway);
+  webrtcGateway.server = io;
+
+  // Socket.io 연결 이벤트 처리
   io.on('connection', (socket) => {
     console.log('Client connected:', socket.id);
     socket.on('disconnect', () => {
@@ -32,9 +37,8 @@ async function bootstrap() {
     });
   });
 
-  app.get(WebrtcGateway).server = io;
-
   await server.listen(3001);
   console.log('HTTPS server running on port 3001');
 }
+
 bootstrap();
